@@ -7,7 +7,7 @@
   "files": [    
     {
       "path": "esp32_bootloader.bin",
-      "offset": "0x1000"
+      "offset": "0x0000"
     },
     {
       "path": "esp32_firmware.bin",
