@@ -1,5 +1,5 @@
 <html lang="vi">
-
+<!-- 300526 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -295,6 +295,28 @@
                 logConsole.scrollHeight;
         }
 
+        function freshUrl(url) {
+            if (!url ||
+                url.startsWith("data:") ||
+                url.startsWith("blob:")) {
+                return url;
+            }
+
+            const fresh =
+                new URL(url, window.location.href);
+
+            fresh.searchParams.set("_", Date.now().toString());
+
+            return fresh.href;
+        }
+
+        function fetchFresh(url, options = {}) {
+            return fetch(freshUrl(url), {
+                cache: "no-store",
+                ...options
+            });
+        }
+
         // Browser check
         if (!("serial" in navigator)) {
 
@@ -362,7 +384,7 @@
 
         async function loadProjectManifest(projectPath) {
             const response =
-                await fetch(projectPath + "/" + PROJECT_MANIFEST);
+                await fetchFresh(projectPath + "/" + PROJECT_MANIFEST);
 
             if (response.status === 404) {
                 return null;
@@ -401,7 +423,7 @@
                     : "");
 
             const response =
-                await fetch(apiUrl, {
+                await fetchFresh(apiUrl, {
                     headers: {
                         Accept: "application/vnd.github+json"
                     }
@@ -443,7 +465,7 @@
             log("Đang tải firmware.json");
 
             const response =
-                await fetch("./firmware.json");
+                await fetchFresh("./firmware.json");
 
             if (!response.ok) {
                 throw new Error("Không tìm thấy firmware.json");
@@ -671,7 +693,7 @@
 
                 for (const file of files) {
                     log("Đang tải " + file.path);
-                    const response = await fetch(file.path);
+                    const response = await fetchFresh(file.path);
 
                     if (!response.ok) {
 
@@ -752,7 +774,7 @@
                 log("Đang tải hướng dẫn: " + guidePath);
 
                 const response =
-                    await fetch(guidePath);
+                    await fetchFresh(guidePath);
 
                 if (!response.ok) {
 
