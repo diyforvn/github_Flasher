@@ -54,3 +54,12 @@ Neu web khong chay tren domain `*.github.io`, hay dien repo vao hang `GITHUB_REP
 Neu GitHub Pages cua ban lay file tu mot nhanh khac nhanh mac dinh, dien ten nhanh vao `GITHUB_BRANCH`, vi du `"gh-pages"`.
 
 `firmware.json` van duoc giu lai lam che do du phong.
+
+## Khi web van hien du lieu cu
+
+1. Doi GitHub Pages deploy xong. Vao tab `Actions` hoac `Settings > Pages` de kiem tra lan deploy moi nhat.
+2. Mo lai trang bang hard refresh: `Ctrl + F5`.
+3. Neu van cu, them tham so vao URL de bo cache, vi du `https://user.github.io/repo/?v=2`.
+4. Kiem tra `GITHUB_BRANCH` trong `index.html`. Neu Pages deploy tu nhanh `gh-pages` nhung API doc tu nhanh mac dinh, danh sach co the bi lech.
+
+`index.html` da them cache-busting cho `project.json`, `firmware.json`, file huong dan va file `.bin`, nen sau khi deploy xong thi moi lan mo trang se uu tien lay ban moi.
