@@ -616,14 +616,17 @@
 
                 log("Đang kết nối ESP...");
 
-                await esploader.main_fn();
-
                 const chip =
-                    esploader.chip.CHIP_NAME;
+                    await esploader.main();
+
+                const chipName =
+                    chip ||
+                    esploader.chip?.CHIP_NAME ||
+                    "ESP";
 
                 document.getElementById(
                     "chipName"
-                ).innerText = chip;
+                ).innerText = chipName;
 
                 document.getElementById(
                     "connectState"
@@ -636,7 +639,7 @@
                     "text-green-400";
 
                 log("Kết nối thành công!");
-                log("Chip: " + chip);
+                log("Chip: " + chipName);
 
             } catch (e) {
 
@@ -665,10 +668,10 @@
                 return;
             }
             
-            await flashFiles(fw.files);
+            await flashFiles(fw);
         };
 
-        async function flashFiles(files) {
+        async function flashFiles(fw) {
             const modal =
                 document.getElementById(
                     "progressModal"
@@ -689,6 +692,9 @@
             modal.classList.add("flex");
 
             try {
+                const files =
+                    fw.files || [];
+
                 let flashFiles = [];
 
                 for (const file of files) {
@@ -713,19 +719,31 @@
                     });
                 }
 
-                log("Đang xóa flash...");
-
-                await esploader.eraseFlash();
-
                 log("Đang flash firmware...");
 
-                await esploader.writeFlash(
+                await esploader.writeFlash({
+                    fileArray:
+                        flashFiles,
 
-                    flashFiles,
+                    flashMode:
+                        fw.flashMode || "keep",
 
-                    (fileIndex,
-                     written,
-                     total) => {
+                    flashFreq:
+                        fw.flashFreq || "keep",
+
+                    flashSize:
+                        fw.flashSize || "keep",
+
+                    eraseAll:
+                        fw.eraseAll !== false,
+
+                    compress:
+                        fw.compress !== false,
+
+                    reportProgress:
+                        (fileIndex,
+                         written,
+                         total) => {
 
                         const percent =
                             Math.floor(
@@ -738,11 +756,11 @@
                         progressText.innerText =
                             percent + "%";
                     }
-                );
+                });
 
                 log("Flash thành công!");
 
-                await esploader.hardReset();
+                await esploader.after("hard_reset");
                 alert("Nạp firmware thành công!");
 
             } catch (e) {
