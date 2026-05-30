@@ -1,0 +1,13 @@
+{
+  "name": "RGB LED Controller",
+  "chip": "ESP8266",
+  "version": "3.0.0",
+  "description": "WLED compatible RGB controller",
+  "guide": "../../instructions/rgb.md",
+  "files": [
+    {
+      "path": "firmware.bin",
+      "offset": "0x0000"
+    }
+  ]
+}

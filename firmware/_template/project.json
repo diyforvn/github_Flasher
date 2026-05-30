@@ -1,0 +1,21 @@
+{
+  "name": "Ten project",
+  "chip": "ESP32",
+  "version": "1.0.0",
+  "description": "Mo ta ngan ve firmware",
+  "guide": "guide.md",
+  "files": [
+    {
+      "path": "bootloader.bin",
+      "offset": "0x1000"
+    },
+    {
+      "path": "partitions.bin",
+      "offset": "0x8000"
+    },
+    {
+      "path": "firmware.bin",
+      "offset": "0x10000"
+    }
+  ]
+}

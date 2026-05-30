@@ -1,0 +1,21 @@
+{
+  "name": "Smart Fan Controller",
+  "chip": "ESP32",
+  "version": "2.1.0",
+  "description": "WiFi + Bluetooth smart fan",
+  "guide": "smartfan.md",
+  "files": [
+    {
+      "path": "bootloader.bin",
+      "offset": "0x1000"
+    },
+    {
+      "path": "partitions.bin",
+      "offset": "0x8000"
+    },
+    {
+      "path": "firmware.bin",
+      "offset": "0x10000"
+    }
+  ]
+}

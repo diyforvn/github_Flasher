@@ -1,0 +1,802 @@
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>DIYforVN ESP Flasher</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Markdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+
+    <style>
+        body {
+            background: #0f172a;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        #logConsole::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #logConsole::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="text-slate-100 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="border-b border-slate-800 bg-slate-950/70 backdrop-blur sticky top-0 z-50">
+
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-11 h-11 rounded-2xl bg-blue-600 flex items-center justify-center">
+                    <i data-lucide="cpu"></i>
+                </div>
+
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight">
+                        DIYforVN ESP Flasher
+                    </h1>
+
+                    <p class="text-slate-400 text-sm">
+                        Web Firmware Installer
+                    </p>
+                </div>
+
+            </div>
+
+            <button id="btnConnect"
+                class="bg-blue-600 hover:bg-blue-700 transition-all px-5 py-3 rounded-xl font-semibold flex items-center gap-2">
+
+                <i data-lucide="usb"></i>
+
+                Kết nối ESP
+
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- LEFT -->
+            <div class="lg:col-span-2">
+
+                <div class="flex items-center gap-3 mb-6">
+
+                    <i data-lucide="hard-drive-download"></i>
+
+                    <h2 class="text-xl font-bold">
+                        Danh sách Firmware
+                    </h2>
+
+                </div>
+
+                <div id="firmwareList"
+                    class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <div
+                        class="glass rounded-2xl border border-slate-800 p-5">
+
+                        Đang tải firmware...
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="space-y-6">
+
+                <!-- STATUS -->
+                <div
+                    class="glass border border-slate-800 rounded-2xl p-6">
+
+                    <div class="flex items-center gap-2 mb-4">
+
+                        <i data-lucide="activity"></i>
+
+                        <h3 class="font-bold text-lg">
+                            Trạng thái thiết bị
+                        </h3>
+
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">
+                                Chip
+                            </span>
+
+                            <span id="chipName">
+                                -
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">
+                                MAC
+                            </span>
+
+                            <span id="chipMac">
+                                -
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">
+                                Kết nối
+                            </span>
+
+                            <span id="connectState"
+                                class="text-red-400">
+                                Chưa kết nối
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- LOG -->
+                <div
+                    class="glass border border-slate-800 rounded-2xl p-6">
+
+                    <div class="flex items-center gap-2 mb-4">
+
+                        <i data-lucide="terminal"></i>
+
+                        <h3 class="font-bold text-lg">
+                            Console
+                        </h3>
+
+                    </div>
+
+                    <div id="logConsole"
+                        class="bg-black rounded-xl p-4 h-72 overflow-y-auto text-green-400 text-sm font-mono">
+
+                        <div>
+                            > System ready...
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- GUIDE -->
+                <div id="instructionPanel"
+                    class="glass border border-slate-800 rounded-2xl p-6 hidden">
+
+                    <div class="flex items-center gap-2 mb-5">
+
+                        <i data-lucide="book-open"></i>
+
+                        <h3 class="font-bold text-lg">
+                            Hướng dẫn
+                        </h3>
+
+                    </div>
+
+                    <div id="markdownContent"
+                        class="prose prose-invert max-w-none">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- MODAL -->
+    <div id="progressModal"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-3xl p-8 w-[380px] text-center">
+
+            <div
+                class="w-20 h-20 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin mx-auto mb-5">
+            </div>
+
+            <h3 class="text-2xl font-black mb-2">
+                Đang nạp Firmware
+            </h3>
+
+            <p class="text-slate-400 mb-6">
+                Vui lòng không rút USB
+            </p>
+
+            <div class="mb-3">
+
+                <div
+                    class="w-full bg-slate-800 rounded-full h-5 overflow-hidden">
+
+                    <div id="progressBar"
+                        class="bg-blue-500 h-5 transition-all"
+                        style="width:0%">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="progressPercent"
+                class="text-4xl font-black text-blue-400">
+
+                0%
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- APP -->
+    <script type="module">
+
+        import {
+            ESPLoader,
+            Transport
+        } from "https://unpkg.com/esptool-js@0.6.0/bundle.js";
+
+        let transport;
+        let esploader;
+        let firmwareData = []; // Lưu trữ dữ liệu firmware
+        const PROJECTS_DIR = "firmware";
+        const PROJECT_MANIFEST = "project.json";
+        const GITHUB_REPOSITORY = ""; // Điền "owner/repo" nếu dùng custom domain
+        const GITHUB_BRANCH = ""; // Điền nhánh Pages nếu không dùng nhánh mặc định
+
+        const logConsole =
+            document.getElementById("logConsole");
+
+        function log(message) {
+
+            console.log(message);
+
+            const div =
+                document.createElement("div");
+
+            div.innerText =
+                "> " + message;
+
+            logConsole.appendChild(div);
+
+            logConsole.scrollTop =
+                logConsole.scrollHeight;
+        }
+
+        // Browser check
+        if (!("serial" in navigator)) {
+
+            alert(
+                "Browser không hỗ trợ Web Serial.\nDùng Chrome hoặc Edge."
+            );
+        }
+
+        function getGithubRepository() {
+            if (GITHUB_REPOSITORY) {
+                return GITHUB_REPOSITORY;
+            }
+
+            const host =
+                window.location.hostname.toLowerCase();
+
+            if (!host.endsWith(".github.io")) {
+                return "";
+            }
+
+            const owner =
+                host.replace(".github.io", "");
+
+            const pathParts =
+                window.location.pathname
+                    .split("/")
+                    .filter(Boolean);
+
+            const repo =
+                pathParts[0] || owner + ".github.io";
+
+            return owner + "/" + repo;
+        }
+
+        function resolveProjectAsset(assetPath, projectPath) {
+            if (!assetPath) {
+                return "";
+            }
+
+            if (/^(https?:)?\/\//i.test(assetPath) ||
+                assetPath.startsWith("data:") ||
+                assetPath.startsWith("blob:")) {
+                return assetPath;
+            }
+
+            const projectUrl =
+                new URL(projectPath + "/", window.location.href);
+
+            return new URL(assetPath, projectUrl).href;
+        }
+
+        function normalizeProject(project, projectPath) {
+            return {
+                ...project,
+                guide:
+                    resolveProjectAsset(project.guide, projectPath),
+                files:
+                    (project.files || []).map((file) => ({
+                        ...file,
+                        path:
+                            resolveProjectAsset(file.path, projectPath)
+                    }))
+            };
+        }
+
+        async function loadProjectManifest(projectPath) {
+            const response =
+                await fetch(projectPath + "/" + PROJECT_MANIFEST);
+
+            if (response.status === 404) {
+                return null;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    "Không tải được " + projectPath + "/" + PROJECT_MANIFEST
+                );
+            }
+
+            const project =
+                await response.json();
+
+            return normalizeProject(project, projectPath);
+        }
+
+        async function discoverFirmwareProjects() {
+            const repository =
+                getGithubRepository();
+
+            if (!repository) {
+                log("Không chạy trên GitHub Pages, dùng firmware.json");
+                return [];
+            }
+
+            log("Đang tự quét thư mục " + PROJECTS_DIR);
+
+            const apiUrl =
+                "https://api.github.com/repos/" +
+                repository +
+                "/contents/" +
+                PROJECTS_DIR +
+                (GITHUB_BRANCH
+                    ? "?ref=" + encodeURIComponent(GITHUB_BRANCH)
+                    : "");
+
+            const response =
+                await fetch(apiUrl, {
+                    headers: {
+                        Accept: "application/vnd.github+json"
+                    }
+                });
+
+            if (!response.ok) {
+                throw new Error(
+                    "GitHub API trả về " + response.status
+                );
+            }
+
+            const entries =
+                await response.json();
+
+            const projectDirs =
+                entries
+                    .filter((entry) =>
+                        entry.type === "dir" &&
+                        !entry.name.startsWith("_") &&
+                        !entry.name.startsWith(".")
+                    )
+                    .sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+
+            const projects =
+                await Promise.all(
+                    projectDirs.map((dir) =>
+                        loadProjectManifest(
+                            PROJECTS_DIR + "/" + dir.name
+                        )
+                    )
+                );
+
+            return projects.filter(Boolean);
+        }
+
+        async function loadFirmwareJson() {
+            log("Đang tải firmware.json");
+
+            const response =
+                await fetch("./firmware.json");
+
+            if (!response.ok) {
+                throw new Error("Không tìm thấy firmware.json");
+            }
+
+            return await response.json();
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function renderFirmwares() {
+            const container =
+                document.getElementById("firmwareList");
+
+            container.innerHTML = "";
+
+            firmwareData.forEach((fw, index) => {
+                const card =
+                    document.createElement("div");
+
+                const guideButton = fw.guide ? `
+                    <button
+                        class="border border-slate-700 hover:bg-slate-800 px-4 rounded-xl"
+                        onclick="loadGuideByIndex(${index})">
+
+                        <i data-lucide="book-open"></i>
+
+                    </button>
+                ` : "";
+
+                card.className =
+                    "glass border border-slate-800 rounded-2xl p-5 transition-all card-hover";
+
+                card.innerHTML = `
+
+                    <div class="flex justify-between mb-4">
+
+                        <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold">
+                            ${escapeHtml(fw.chip)}
+                        </span>
+
+                        <span class="text-slate-400 text-sm">
+                            v${escapeHtml(fw.version)}
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-3">
+                        ${escapeHtml(fw.name)}
+                    </h3>
+
+                    <p class="text-slate-400 text-sm mb-6">
+                        ${escapeHtml(fw.description)}
+                    </p>
+
+                    <div class="flex gap-3">
+
+                        <button
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-semibold transition-all"
+                            onclick="flashFirmwareByIndex(${index})">
+
+                            Flash
+
+                        </button>
+
+                        ${guideButton}
+
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // LOAD FIRMWARE LIST
+        async function loadFirmwares() {
+            try {
+                let discoveredProjects = [];
+
+                try {
+                    discoveredProjects =
+                        await discoverFirmwareProjects();
+                } catch (discoverError) {
+                    console.warn(discoverError);
+                    log(
+                        "Không tự quét được thư mục firmware: " +
+                        discoverError.message
+                    );
+                }
+
+                firmwareData =
+                    discoveredProjects;
+
+                if (!firmwareData.length) {
+                    firmwareData =
+                        await loadFirmwareJson();
+                }
+
+                log("Đã tải " + firmwareData.length + " firmware");
+                renderFirmwares();
+
+            } catch (e) {
+
+                console.error(e);
+
+                log("Lỗi tải danh sách firmware: " + e.message);
+
+                document.getElementById(
+                    "firmwareList"
+                ).innerHTML = `
+                    <div class="glass rounded-2xl border border-red-500 p-5 text-red-400">
+                        Không thể tải danh sách firmware
+                    </div>
+                `;
+            }
+        }
+
+        // CONNECT
+        document.getElementById("btnConnect")
+        .onclick = async () => {
+
+            try {
+
+                log("Đang yêu cầu chọn COM...");
+
+                const port =
+                    await navigator.serial.requestPort();
+
+                transport =
+                    new Transport(port);
+
+                esploader =
+                    new ESPLoader({
+
+                        transport: transport,
+
+                        baudrate: 115200
+                    });
+
+                log("Đang kết nối ESP...");
+
+                await esploader.main_fn();
+
+                const chip =
+                    esploader.chip.CHIP_NAME;
+
+                document.getElementById(
+                    "chipName"
+                ).innerText = chip;
+
+                document.getElementById(
+                    "connectState"
+                ).innerText =
+                    "Đã kết nối";
+
+                document.getElementById(
+                    "connectState"
+                ).className =
+                    "text-green-400";
+
+                log("Kết nối thành công!");
+                log("Chip: " + chip);
+
+            } catch (e) {
+
+                console.error(e);
+
+                log("Lỗi kết nối: " + e.message);
+
+                alert("Không thể kết nối ESP!");
+            }
+        };
+
+
+
+        // FLASH
+        window.flashFirmwareByIndex = async (index) => {
+            if (!esploader) {
+                alert("Vui lòng kết nối ESP trước!");
+                return;
+            }
+
+            const fw = firmwareData[index];
+            if (!fw) return;
+
+            if (!Array.isArray(fw.files) || !fw.files.length) {
+                alert("Firmware này chưa khai báo file để flash!");
+                return;
+            }
+            
+            await flashFiles(fw.files);
+        };
+
+        async function flashFiles(files) {
+            const modal =
+                document.getElementById(
+                    "progressModal"
+                );
+
+            const progressBar =
+                document.getElementById(
+                    "progressBar"
+                );
+
+            const progressText =
+                document.getElementById(
+                    "progressPercent"
+                );
+
+            modal.classList.remove("hidden");
+
+            modal.classList.add("flex");
+
+            try {
+                let flashFiles = [];
+
+                for (const file of files) {
+                    log("Đang tải " + file.path);
+                    const response = await fetch(file.path);
+
+                    if (!response.ok) {
+
+                        throw new Error("Không tải được " + file.path);
+                    }
+
+                    const content =
+                        await response.arrayBuffer();
+
+                    flashFiles.push({
+
+                        data:
+                            new Uint8Array(content),
+
+                        address:
+                            parseInt(file.offset)
+                    });
+                }
+
+                log("Đang xóa flash...");
+
+                await esploader.eraseFlash();
+
+                log("Đang flash firmware...");
+
+                await esploader.writeFlash(
+
+                    flashFiles,
+
+                    (fileIndex,
+                     written,
+                     total) => {
+
+                        const percent =
+                            Math.floor(
+                                written / total * 100
+                            );
+
+                        progressBar.style.width =
+                            percent + "%";
+
+                        progressText.innerText =
+                            percent + "%";
+                    }
+                );
+
+                log("Flash thành công!");
+
+                await esploader.hardReset();
+                alert("Nạp firmware thành công!");
+
+            } catch (e) {
+                console.error(e);
+                log("Lỗi flash: " + e.message);
+                alert("Flash thất bại!");
+            } finally {
+                modal.classList.remove("flex");
+                modal.classList.add("hidden");
+            }
+        }
+
+        // GUIDE
+        window.loadGuideByIndex = async (index) => {
+            const fw = firmwareData[index];
+
+            if (!fw || !fw.guide) {
+                return;
+            }
+
+            await window.loadGuide(fw.guide);
+        };
+
+        window.loadGuide =
+            async (guidePath) => {
+
+            try {
+
+                log("Đang tải hướng dẫn: " + guidePath);
+
+                const response =
+                    await fetch(guidePath);
+
+                if (!response.ok) {
+
+                    throw new Error("Không tìm thấy file hướng dẫn");
+                }
+
+                const markdown =
+                    await response.text();
+
+                document.getElementById(
+                    "markdownContent"
+                ).innerHTML =
+                    marked.parse(markdown);
+
+                document.getElementById(
+                    "instructionPanel"
+                ).classList.remove("hidden");
+
+                log("Đã tải hướng dẫn");
+
+                window.scrollTo({
+                    top:
+                        document.body.scrollHeight,
+
+                    behavior: "smooth"
+                });
+
+            } catch (e) {
+
+                console.error(e);
+
+                log("Không thể tải hướng dẫn: " + e.message);
+
+                alert("Không tải được hướng dẫn");
+            }
+        };
+
+        // INIT
+        loadFirmwares();
+
+        lucide.createIcons();
+
+    </script>
+
+</body>
+
+</html>

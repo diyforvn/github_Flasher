@@ -1,0 +1,21 @@
+{
+  "name": "Mini PLC",
+  "chip": "ESP32-S3",
+  "version": "0.9.5",
+  "description": "Industrial IO controller",
+  "guide": "../../instructions/plc.md",
+  "files": [
+    {
+      "path": "bootloader.bin",
+      "offset": "0x0000"
+    },
+    {
+      "path": "partitions.bin",
+      "offset": "0x8000"
+    },
+    {
+      "path": "firmware.bin",
+      "offset": "0x10000"
+    }
+  ]
+}
