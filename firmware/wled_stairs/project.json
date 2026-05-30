@@ -1,0 +1,13 @@
+{
+  "name": "WLED Stairs",
+  "chip": "ESP32",
+  "version": "1.0.0",
+  "description": "WLED Stairs",
+  "guide": "wled_stairs.md",
+  "files": [    
+    {
+      "path": "ESP32.bin",
+      "offset": "0x0000"
+    }
+  ]
+}
