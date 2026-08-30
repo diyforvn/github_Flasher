@@ -1,0 +1,10 @@
+{
+  "name": "github-flasher",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "update-firmware": "node scripts/update-firmware-manifest.js",
+    "watch-firmware": "node scripts/watch-firmware.js",
+    "test": "node --test"
+  }
+}

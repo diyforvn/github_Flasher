@@ -1,89 +1,43 @@
-
 [
   {
-    "name": "Ambilight ESP32",
+    "name": "WLED Stairs",
     "chip": "ESP32",
     "version": "1.0.0",
-    "description": "Realtime RGB sync for desktop",
-
-    "guide": "instructions/ambilight.md",
-
+    "description": "WLED Stairs",
+    "guide": "firmware/wled_stairs/wled_stairs.md",
     "files": [
       {
-        "path": "firmware/ambilight/bootloader.bin",
-        "offset": "0x1000"
-      },
-      {
-        "path": "firmware/ambilight/partitions.bin",
-        "offset": "0x8000"
-      },
-      {
-        "path": "firmware/ambilight/firmware.bin",
-        "offset": "0x10000"
-      }
-    ]
-  },
-
-  {
-    "name": "Smart Fan Controller",
-    "chip": "ESP32",
-    "version": "2.1.0",
-    "description": "WiFi + Bluetooth smart fan",
-
-    "guide": "instructions/smartfan.md",
-
-    "files": [
-      {
-        "path": "firmware/smartfan/bootloader.bin",
-        "offset": "0x1000"
-      },
-      {
-        "path": "firmware/smartfan/partitions.bin",
-        "offset": "0x8000"
-      },
-      {
-        "path": "firmware/smartfan/firmware.bin",
-        "offset": "0x10000"
-      }
-    ]
-  },
-
-  {
-    "name": "Mini PLC",
-    "chip": "ESP32-S3",
-    "version": "0.9.5",
-    "description": "Industrial IO controller",
-
-    "guide": "instructions/plc.md",
-
-    "files": [
-      {
-        "path": "firmware/plc/bootloader.bin",
+        "path": "firmware/wled_stairs/esp32_bootloader.bin",
         "offset": "0x0000"
       },
       {
-        "path": "firmware/plc/partitions.bin",
-        "offset": "0x8000"
-      },
-      {
-        "path": "firmware/plc/firmware.bin",
+        "path": "firmware/wled_stairs/esp32_firmware.bin",
         "offset": "0x10000"
       }
     ]
   },
-
   {
-    "name": "RGB LED Controller",
-    "chip": "ESP8266",
-    "version": "3.0.0",
-    "description": "WLED compatible RGB controller",
-
-    "guide": "instructions/rgb.md",
-
+    "name": "XiaoZhi - diyforvn",
+    "chip": "ESP32S3",
+    "version": "1.0.0",
+    "description": "XiaoZhi - diyforvn",
+    "guide": "firmware/XiaoZhi/readme.md",
     "files": [
       {
-        "path": "firmware/rgb/firmware.bin",
+        "path": "firmware/XiaoZhi/bootloader.bin",
         "offset": "0x0000"
+      },
+      {
+        "path": "firmware/XiaoZhi/partition-table.bin",
+        "offset": "0x8000"
+      },
+      {
+        "path": "firmware/XiaoZhi/ota_data_initial.bin",
+        "offset": "0xd000"
+      },
+      {
+        "path": "firmware/XiaoZhi/xiaozhi.bin",
+        "offset": "0x10000"
       }
     ]
   }
