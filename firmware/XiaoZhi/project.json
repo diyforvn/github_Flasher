@@ -19,7 +19,11 @@
     },
     {
       "path": "xiaozhi.bin",
-      "offset": "0x10000"
+      "offset": "0x20000"
+    },
+    {
+      "path": "generated_assets.bin",
+      "offset": "0x800000"
     }
   ]
 }

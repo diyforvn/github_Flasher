@@ -37,7 +37,11 @@
       },
       {
         "path": "firmware/XiaoZhi/xiaozhi.bin",
-        "offset": "0x10000"
+        "offset": "0x20000"
+      },
+      {
+        "path": "firmware/XiaoZhi/generated_assets.bin",
+        "offset": "0x800000"
       }
     ]
   }
