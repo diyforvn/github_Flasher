@@ -4,7 +4,7 @@
     "chip": "ESP32S3",
     "description": "XiaoZhi - diyforvn",
     "guide": "firmware/XiaoZhi/readme.md",
-    "latest": "OLED SH110x",
+    "latest": "2.4.0",
     "versions": [
       {
         "version": "OLED SH110x",
