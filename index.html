@@ -610,6 +610,8 @@
                         const v = fw.versions.find((x) => x.version === select.value);
                         document.getElementById("notes-" + index).innerText =
                             (v && v.notes) || "";
+                        log("Đã chọn " + fw.name + " v" + select.value +
+                            " (" + (v ? v.files.length : 0) + " file)");
                     });
                 }
             });
@@ -641,7 +643,9 @@
                         await loadFirmwareJson();
                 }
 
-                log("Đã tải " + firmwareData.length + " firmware");
+                log("Đã tải " + firmwareData.length + " firmware (" +
+                    firmwareData.reduce((n, f) => n + f.versions.length, 0) +
+                    " version)");
                 renderFirmwares();
 
             } catch (e) {
@@ -749,6 +753,42 @@
             await flashFiles({ ...fw, ...ver, files: ver.files });
         };
 
+        async function shortHash(buffer) {
+            try {
+                const digest =
+                    await crypto.subtle.digest("SHA-256", buffer);
+
+                return Array.from(new Uint8Array(digest))
+                    .slice(0, 4)
+                    .map((b) => b.toString(16).padStart(2, "0"))
+                    .join("");
+            } catch (e) {
+                return "n/a";
+            }
+        }
+
+        // Ngắt kết nối sau khi flash: chip đã hard_reset nên phiên esptool cũ không còn ở bootloader.
+        async function resetConnection() {
+            try {
+                if (transport) {
+                    await transport.disconnect();
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+
+            transport = null;
+            esploader = null;
+
+            document.getElementById("chipName").innerText = "-";
+
+            const state = document.getElementById("connectState");
+            state.innerText = "Chưa kết nối";
+            state.className = "text-red-400";
+
+            log("Đã ngắt kết nối. Bấm 'Kết nối ESP' để nạp tiếp.");
+        }
+
         async function flashFiles(fw) {
             const modal =
                 document.getElementById(
@@ -786,6 +826,11 @@
 
                     const content =
                         await response.arrayBuffer();
+
+                    log("  " + file.offset + " <- " +
+                        file.path.split("?")[0].split("/").slice(-2).join("/") +
+                        " (" + content.byteLength + " B, sha256 " +
+                        await shortHash(content) + ")");
 
                     flashFiles.push({
 
@@ -839,7 +884,9 @@
                 log("Flash thành công!");
 
                 await esploader.after("hard_reset");
-                alert("Nạp firmware thành công!");
+                log("Đã nạp xong " + fw.name + " v" + fw.version);
+                await resetConnection();
+                alert("Nạp firmware thành công!\nMuốn nạp tiếp, bấm 'Kết nối ESP' lại.");
 
             } catch (e) {
                 console.error(e);
