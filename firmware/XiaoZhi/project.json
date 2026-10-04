@@ -1,29 +1,42 @@
 {
   "name": "XiaoZhi - diyforvn",
   "chip": "ESP32S3",
-  "version": "1.0.0",
   "description": "XiaoZhi - diyforvn",
   "guide": "readme.md",
-  "files": [    
+  "latest": "2.4.0",
+  "versions": [
     {
-      "path": "bootloader.bin",
-      "offset": "0x0000"
+      "version": "2.4.0",
+      "notes": "Bản dùng OLED SH110x",
+      "files": [
+        { "path": "bootloader.bin",       "offset": "0x0000" },
+        { "path": "partition-table.bin",  "offset": "0x8000" },
+        { "path": "ota_data_initial.bin", "offset": "0xd000" },
+        { "path": "xiaozhi.bin",          "offset": "0x20000" },
+        { "path": "generated_assets.bin", "offset": "0x800000" }
+      ]
     },
     {
-      "path": "partition-table.bin",
-      "offset": "0x8000"
+      "version": "2.4.0",
+      "notes": "Bản dùng với TFT LCD ILI9341",
+      "files": [
+        { "path": "bootloader.bin",       "offset": "0x0000" },
+        { "path": "partition-table.bin",  "offset": "0x8000" },
+        { "path": "ota_data_initial.bin", "offset": "0xd000" },
+        { "path": "xiaozhi_LCD_ILI9341_240X320.bin", "offset": "0x20000" },
+        { "path": "generated_assets.bin", "offset": "0x800000" }
+      ]
     },
     {
-      "path": "ota_data_initial.bin",
-      "offset": "0xd000"
-    },
-    {
-      "path": "xiaozhi.bin",
-      "offset": "0x20000"
-    },
-    {
-      "path": "generated_assets.bin",
-      "offset": "0x800000"
+      "version": "2.4.0",
+      "notes": "Bản dùng với TFT LCD ST7789",
+      "files": [
+        { "path": "bootloader.bin",       "offset": "0x0000" },
+        { "path": "partition-table.bin",  "offset": "0x8000" },
+        { "path": "ota_data_initial.bin", "offset": "0xd000" },
+        { "path": "xiaozhi_LCD_ST7789_240X320.bin", "offset": "0x20000" },
+        { "path": "generated_assets.bin", "offset": "0x800000" }
+      ]
     }
   ]
 }

@@ -1,3 +1,10 @@
 Nạp firmware cho board kit hỗ trợ học tập xiaozhi AI
 v1-1
 https://s.shopee.vn/4fvnuZ3Czt
+
+![Board XiaoZhi](./images/1.jpg)
+![Board XiaoZhi](./images/2.jpg)
+![Board XiaoZhi](./images/3.jpg)
+![Board XiaoZhi](./images/4.jpg)
+![Board XiaoZhi](./images/5.jpg)
+![Board XiaoZhi](./images/6.jpg)

@@ -1,47 +1,88 @@
 [
   {
-    "name": "WLED Stairs",
-    "chip": "ESP32",
-    "version": "1.0.0",
-    "description": "WLED Stairs",
-    "guide": "firmware/wled_stairs/wled_stairs.md",
-    "files": [
-      {
-        "path": "firmware/wled_stairs/esp32_bootloader.bin",
-        "offset": "0x0000"
-      },
-      {
-        "path": "firmware/wled_stairs/esp32_firmware.bin",
-        "offset": "0x10000"
-      }
-    ]
-  },
-  {
     "name": "XiaoZhi - diyforvn",
     "chip": "ESP32S3",
-    "version": "1.0.0",
     "description": "XiaoZhi - diyforvn",
     "guide": "firmware/XiaoZhi/readme.md",
-    "files": [
+    "latest": "2.4.0",
+    "versions": [
       {
-        "path": "firmware/XiaoZhi/bootloader.bin",
-        "offset": "0x0000"
+        "version": "2.4.0",
+        "notes": "Bản dùng OLED SH110x",
+        "files": [
+          {
+            "path": "firmware/XiaoZhi/bootloader.bin",
+            "offset": "0x0000"
+          },
+          {
+            "path": "firmware/XiaoZhi/partition-table.bin",
+            "offset": "0x8000"
+          },
+          {
+            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "offset": "0xd000"
+          },
+          {
+            "path": "firmware/XiaoZhi/xiaozhi.bin",
+            "offset": "0x20000"
+          },
+          {
+            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "offset": "0x800000"
+          }
+        ]
       },
       {
-        "path": "firmware/XiaoZhi/partition-table.bin",
-        "offset": "0x8000"
+        "version": "2.4.0",
+        "notes": "Bản dùng với TFT LCD ILI9341",
+        "files": [
+          {
+            "path": "firmware/XiaoZhi/bootloader.bin",
+            "offset": "0x0000"
+          },
+          {
+            "path": "firmware/XiaoZhi/partition-table.bin",
+            "offset": "0x8000"
+          },
+          {
+            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "offset": "0xd000"
+          },
+          {
+            "path": "firmware/XiaoZhi/xiaozhi_LCD_ILI9341_240X320.bin",
+            "offset": "0x20000"
+          },
+          {
+            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "offset": "0x800000"
+          }
+        ]
       },
       {
-        "path": "firmware/XiaoZhi/ota_data_initial.bin",
-        "offset": "0xd000"
-      },
-      {
-        "path": "firmware/XiaoZhi/xiaozhi.bin",
-        "offset": "0x20000"
-      },
-      {
-        "path": "firmware/XiaoZhi/generated_assets.bin",
-        "offset": "0x800000"
+        "version": "2.4.0",
+        "notes": "Bản dùng với TFT LCD ST7789",
+        "files": [
+          {
+            "path": "firmware/XiaoZhi/bootloader.bin",
+            "offset": "0x0000"
+          },
+          {
+            "path": "firmware/XiaoZhi/partition-table.bin",
+            "offset": "0x8000"
+          },
+          {
+            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "offset": "0xd000"
+          },
+          {
+            "path": "firmware/XiaoZhi/xiaozhi_LCD_ST7789_240X320.bin",
+            "offset": "0x20000"
+          },
+          {
+            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "offset": "0x800000"
+          }
+        ]
       }
     ]
   }

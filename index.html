@@ -368,16 +368,47 @@
             return new URL(assetPath, projectUrl).href;
         }
 
+        // Chuẩn hoá firmware về dạng có "versions".
+        // - project.json mới: có "versions": [{ version, files, ... }]
+        // - project.json cũ / firmware.json cũ: chỉ có "version" + "files" -> tự gói thành 1 version
+        function ensureVersions(project) {
+            const versions =
+                (Array.isArray(project.versions) && project.versions.length
+                    ? project.versions
+                    : [{
+                        version: project.version || "1.0.0",
+                        files: project.files || []
+                    }]
+                ).map((v) => ({
+                    ...v,
+                    version: String(v.version ?? "1.0.0"),
+                    files: v.files || []
+                }));
+
+            const latest =
+                versions.some((v) => v.version === String(project.latest))
+                    ? String(project.latest)
+                    : versions[0].version;
+
+            return { ...project, versions, latest };
+        }
+
         function normalizeProject(project, projectPath) {
+            const withVersions = ensureVersions(project);
+
             return {
-                ...project,
+                ...withVersions,
                 guide:
-                    resolveProjectAsset(project.guide, projectPath),
-                files:
-                    (project.files || []).map((file) => ({
-                        ...file,
-                        path:
-                            resolveProjectAsset(file.path, projectPath)
+                    resolveProjectAsset(withVersions.guide, projectPath),
+                versions:
+                    withVersions.versions.map((v) => ({
+                        ...v,
+                        files:
+                            v.files.map((file) => ({
+                                ...file,
+                                path:
+                                    resolveProjectAsset(file.path, projectPath)
+                            }))
                     }))
             };
         }
@@ -471,7 +502,10 @@
                 throw new Error("Không tìm thấy firmware.json");
             }
 
-            return await response.json();
+            const list = await response.json();
+
+            // Đường dẫn trong firmware.json đã tính từ thư mục gốc nên chỉ cần chuẩn hoá versions
+            return list.map(ensureVersions);
         }
 
         function escapeHtml(value) {
@@ -503,6 +537,24 @@
                     </button>
                 ` : "";
 
+                const versionControl =
+                    fw.versions.length > 1 ? `
+                        <select id="ver-${index}"
+                            class="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-2 py-1 focus:outline-none">
+                            ${fw.versions.map((v) => `
+                                <option value="${escapeHtml(v.version)}"
+                                    ${v.version === fw.latest ? "selected" : ""}>
+                                    v${escapeHtml(v.version)}${v.version === fw.latest ? " (mới nhất)" : ""}
+                                </option>
+                            `).join("")}
+                        </select>
+                    ` : `
+                        <span id="ver-${index}" data-version="${escapeHtml(fw.versions[0].version)}"
+                            class="text-slate-400 text-sm">
+                            v${escapeHtml(fw.versions[0].version)}
+                        </span>
+                    `;
+
                 card.className =
                     "glass border border-slate-800 rounded-2xl p-5 transition-all card-hover";
 
@@ -514,9 +566,7 @@
                             ${escapeHtml(fw.chip)}
                         </span>
 
-                        <span class="text-slate-400 text-sm">
-                            v${escapeHtml(fw.version)}
-                        </span>
+                        ${versionControl}
 
                     </div>
 
@@ -524,8 +574,14 @@
                         ${escapeHtml(fw.name)}
                     </h3>
 
-                    <p class="text-slate-400 text-sm mb-6">
+                    <p class="text-slate-400 text-sm mb-2">
                         ${escapeHtml(fw.description)}
+                    </p>
+
+                    <p id="notes-${index}" class="text-slate-500 text-xs mb-6 min-h-[1rem]">
+                        ${escapeHtml(
+                            (fw.versions.find((v) => v.version === fw.latest) || {}).notes || ""
+                        )}
                     </p>
 
                     <div class="flex gap-3">
@@ -544,6 +600,18 @@
                 `;
 
                 container.appendChild(card);
+            });
+
+            firmwareData.forEach((fw, index) => {
+                const select = document.getElementById("ver-" + index);
+
+                if (select && select.tagName === "SELECT") {
+                    select.addEventListener("change", () => {
+                        const v = fw.versions.find((x) => x.version === select.value);
+                        document.getElementById("notes-" + index).innerText =
+                            (v && v.notes) || "";
+                    });
+                }
             });
 
             lucide.createIcons();
@@ -663,12 +731,22 @@
             const fw = firmwareData[index];
             if (!fw) return;
 
-            if (!Array.isArray(fw.files) || !fw.files.length) {
-                alert("Firmware này chưa khai báo file để flash!");
+            const verEl = document.getElementById("ver-" + index);
+            const selected =
+                (verEl && (verEl.value || verEl.dataset.version)) || fw.latest;
+
+            const ver =
+                fw.versions.find((v) => v.version === selected);
+
+            if (!ver || !Array.isArray(ver.files) || !ver.files.length) {
+                alert("Version này chưa khai báo file để flash!");
                 return;
             }
-            
-            await flashFiles(fw);
+
+            log("Chọn " + fw.name + " v" + ver.version);
+
+            // Tuỳ chọn flash: version ghi đè firmware (vd eraseAll riêng cho từng version)
+            await flashFiles({ ...fw, ...ver, files: ver.files });
         };
 
         async function flashFiles(fw) {
