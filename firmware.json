@@ -11,23 +11,23 @@
         "notes": "Bản dùng OLED SH110x",
         "files": [
           {
-            "path": "firmware/XiaoZhi/bootloader.bin",
+            "path": "firmware/XiaoZhi/oled_sh110x/bootloader.bin",
             "offset": "0x0000"
           },
           {
-            "path": "firmware/XiaoZhi/partition-table.bin",
+            "path": "firmware/XiaoZhi/oled_sh110x/partition-table.bin",
             "offset": "0x8000"
           },
           {
-            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "path": "firmware/XiaoZhi/oled_sh110x/ota_data_initial.bin",
             "offset": "0xd000"
           },
           {
-            "path": "firmware/XiaoZhi/xiaozhi.bin",
+            "path": "firmware/XiaoZhi/oled_sh110x/xiaozhi.bin",
             "offset": "0x20000"
           },
           {
-            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "path": "firmware/XiaoZhi/oled_sh110x/generated_assets.bin",
             "offset": "0x800000"
           }
         ]
@@ -37,23 +37,23 @@
         "notes": "Bản dùng với TFT LCD ILI9341",
         "files": [
           {
-            "path": "firmware/XiaoZhi/bootloader.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/bootloader.bin",
             "offset": "0x0000"
           },
           {
-            "path": "firmware/XiaoZhi/partition-table.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/partition-table.bin",
             "offset": "0x8000"
           },
           {
-            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/ota_data_initial.bin",
             "offset": "0xd000"
           },
           {
-            "path": "firmware/XiaoZhi/xiaozhi_LCD_ILI9341_240X320.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/xiaozhi_LCD_ILI9341_240X320.bin",
             "offset": "0x20000"
           },
           {
-            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/generated_assets.bin",
             "offset": "0x800000"
           }
         ]
@@ -63,23 +63,23 @@
         "notes": "Bản dùng với TFT LCD ST7789",
         "files": [
           {
-            "path": "firmware/XiaoZhi/bootloader.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/bootloader.bin",
             "offset": "0x0000"
           },
           {
-            "path": "firmware/XiaoZhi/partition-table.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/partition-table.bin",
             "offset": "0x8000"
           },
           {
-            "path": "firmware/XiaoZhi/ota_data_initial.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/ota_data_initial.bin",
             "offset": "0xd000"
           },
           {
-            "path": "firmware/XiaoZhi/xiaozhi_LCD_ST7789_240X320.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/xiaozhi_LCD_ST7789_240X320.bin",
             "offset": "0x20000"
           },
           {
-            "path": "firmware/XiaoZhi/generated_assets.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/generated_assets.bin",
             "offset": "0x800000"
           }
         ]
