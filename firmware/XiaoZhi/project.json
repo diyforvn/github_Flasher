@@ -23,7 +23,7 @@
         { "path": "tft_ili9341/bootloader.bin",       "offset": "0x0000" },
         { "path": "tft_ili9341/partition-table.bin",  "offset": "0x8000" },
         { "path": "tft_ili9341/ota_data_initial.bin", "offset": "0xd000" },
-        { "path": "tft_ili9341/xiaozhi_LCD_ILI9341_240X320.bin", "offset": "0x20000" },
+        { "path": "tft_ili9341/xiaozhi.bin", "offset": "0x20000" },
         { "path": "tft_ili9341/generated_assets.bin", "offset": "0x800000" }
       ]
     },
@@ -34,7 +34,7 @@
         { "path": "tft_st7789/bootloader.bin",       "offset": "0x0000" },
         { "path": "tft_st7789/partition-table.bin",  "offset": "0x8000" },
         { "path": "tft_st7789/ota_data_initial.bin", "offset": "0xd000" },
-        { "path": "tft_st7789/xiaozhi_LCD_ST7789_240X320.bin", "offset": "0x20000" },
+        { "path": "tft_st7789/xiaozhi.bin", "offset": "0x20000" },
         { "path": "tft_st7789/generated_assets.bin", "offset": "0x800000" }
       ]
     }

@@ -4,7 +4,7 @@
     "chip": "ESP32S3",
     "description": "XiaoZhi - diyforvn",
     "guide": "firmware/XiaoZhi/readme.md",
-    "latest": "2.4.0",
+    "latest": "OLED SH110x",
     "versions": [
       {
         "version": "OLED SH110x",
@@ -49,7 +49,7 @@
             "offset": "0xd000"
           },
           {
-            "path": "firmware/XiaoZhi/tft_ili9341/xiaozhi_LCD_ILI9341_240X320.bin",
+            "path": "firmware/XiaoZhi/tft_ili9341/xiaozhi.bin",
             "offset": "0x20000"
           },
           {
@@ -75,7 +75,7 @@
             "offset": "0xd000"
           },
           {
-            "path": "firmware/XiaoZhi/tft_st7789/xiaozhi_LCD_ST7789_240X320.bin",
+            "path": "firmware/XiaoZhi/tft_st7789/xiaozhi.bin",
             "offset": "0x20000"
           },
           {
