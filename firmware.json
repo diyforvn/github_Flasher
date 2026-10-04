@@ -4,10 +4,10 @@
     "chip": "ESP32S3",
     "description": "XiaoZhi - diyforvn",
     "guide": "firmware/XiaoZhi/readme.md",
-    "latest": "2.4.0",
+    "latest": "OLED SH110x",
     "versions": [
       {
-        "version": "2.4.0",
+        "version": "OLED SH110x",
         "notes": "Bản dùng OLED SH110x",
         "files": [
           {
@@ -33,7 +33,7 @@
         ]
       },
       {
-        "version": "2.4.0",
+        "version": "TFT LCD ILI9341",
         "notes": "Bản dùng với TFT LCD ILI9341",
         "files": [
           {
@@ -59,7 +59,7 @@
         ]
       },
       {
-        "version": "2.4.0",
+        "version": "TFT LCD ST7789",
         "notes": "Bản dùng với TFT LCD ST7789",
         "files": [
           {

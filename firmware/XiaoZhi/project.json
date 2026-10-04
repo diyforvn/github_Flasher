@@ -6,7 +6,7 @@
   "latest": "2.4.0",
   "versions": [
     {
-      "version": "2.4.0",
+      "version": "OLED SH110x",
       "notes": "Bản dùng OLED SH110x",
       "files": [
         { "path": "bootloader.bin",       "offset": "0x0000" },
@@ -17,7 +17,7 @@
       ]
     },
     {
-      "version": "2.4.0",
+      "version": "TFT LCD ILI9341",
       "notes": "Bản dùng với TFT LCD ILI9341",
       "files": [
         { "path": "bootloader.bin",       "offset": "0x0000" },
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "version": "2.4.0",
+      "version": "TFT LCD ST7789",
       "notes": "Bản dùng với TFT LCD ST7789",
       "files": [
         { "path": "bootloader.bin",       "offset": "0x0000" },
